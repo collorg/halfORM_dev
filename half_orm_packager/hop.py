@@ -280,10 +280,16 @@ def main(ctx, version):
     Generates/Synchronises/Patches a python package from a PostgreSQL database
     """
 
-    if ctx.invoked_subcommand is None:
+    if ctx.invoked_subcommand is None and not version:
         status()
     if version:
         click.echo(f'hop {hop_version()}')
+        try:
+            from half_orm import VERSION
+            click.echo(f'half_orm: {VERSION}')
+        except ImportError as exc:
+            click.echo('half_orm: missing')
+            raise exc
         sys.exit()
 
     sys.path.insert(0, '.')
